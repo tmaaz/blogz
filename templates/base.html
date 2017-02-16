@@ -10,6 +10,16 @@
     </head>
     <body>
         <main id="contentwrap">
+            <header id="logging">
+                {% if username %}
+                Welcome, <a href="/blog/{{ username }}">{{user.username}}</a>!
+                &nbsp;&#124;&nbsp;
+                <a href="/logout">logout</a>
+                {% else %}
+                Already a member?&nbsp;<i class="fa fa-arrow-circle-o-right"></i>&nbsp;&nbsp;
+                <a href="/login">login</a>
+                {% endif %}
+            </header>
             <header id="wrap">
                 <h1><i class="fa fa-paper-plane"></i>&nbsp;Blogz! (Build-a-Blog 2.0)</h1>
                 <h5>When you absolutely, positively need to blog something... right meow.</h5>

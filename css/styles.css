@@ -230,6 +230,12 @@ a:hover, a:active
         font-size: 24px;
     }
 
+#logging
+    {
+        text-align: right;
+        padding-right: 5px;
+    }
+
 hr
     {
         margin: auto;

@@ -1,0 +1,37 @@
+{% extends 'base.html' %}
+{% block title %}
+<h2>Please Enter Your Credentials</h2>
+<h3><em>Don't have an account? <a href="/signup">Get one!</a></em></h3>
+{% endblock %}
+{% block content %}
+<hr />
+<form id="newuser" method="post">
+    <table>
+        <tr>
+            <td class="caption">
+                <span class="caption">Username:</span>
+            </td>
+            <td>
+                <input name="username" type="text" value="{{ username }}">
+            </td>
+        </tr>
+        <tr>
+            <td class="caption">
+                <span class="caption">Password:</span>
+            </td>
+            <td>
+                <input name="password" type="password" />
+            </td>
+        </tr>
+        <tr>
+            <td class="error" colspan="2">
+                &nbsp;<span class="error">{{ error }}</span>
+            </td>
+    </table>
+    <div class="buttonish"><input type="submit" value="Enter Blogz!"></div>
+</form>
+<hr />
+<section id="return">
+    <a href="/blog"><i class="fa fa-arrow-circle-left"></i>&nbsp;Return to main Blog page</a>
+</section>
+{% endblock %}

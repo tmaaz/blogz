@@ -17,7 +17,8 @@ class BlogHandler(webapp2.RequestHandler):
     # Get all posts by user, ordered by creation date (descending)
     def get_posts_by_user(self, user, limit, offset):
         # TODO - filter the query so that only posts by the given user
-        return None
+        query = Post.all().order('-created')
+        return query.fetch(limit=limit, offset=offset)
 
     # Get a user object from the db, based on their username
     def get_user_by_name(self, username):
@@ -271,7 +272,7 @@ class LoginHandler(BlogHandler):
 class LogoutHandler(BlogHandler):
     def get(self):
         self.logout_user()
-        self.redirect('/blog')
+        self.redirect('/')
 
 app = webapp2.WSGIApplication([
     ('/', IndexHandler),
