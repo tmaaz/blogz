@@ -1,20 +1,36 @@
 <!DOCTYPE html>
-
 <html>
     <head>
-        <title>Blogz</title>
+        <title>STLCC 101 | Blogz</title>
+        <script src="https://use.fontawesome.com/f5407f7b61.js"></script>
         <link rel="stylesheet" href="/css/normalize.css">
         <link rel="stylesheet" href="/css/styles.css">
+        <link href="https://fonts.googleapis.com/css?family=Open+Sans:300|Open+Sans+Condensed:300" rel="stylesheet" />
+        <link href="https://fonts.googleapis.com/css?family=Raleway:700|Raleway:300" rel="stylesheet" />
     </head>
     <body>
-        <nav>
-            <ul>
-                <li><a href="/">home</a></li>
-                <li><a href="/blog">all posts</a></li>
-                <li><a href="/blog/newpost">new post</a></li>
-            </ul>
-        </nav>
-        {% block content %}
-        {% endblock %}
+        <main id="contentwrap">
+            <header id="wrap">
+                <h1><i class="fa fa-paper-plane"></i>&nbsp;Blogz! (Build-a-Blog 2.0)</h1>
+                <h5>When you absolutely, positively need to blog something... right meow.</h5>
+                <h6>by Trevor Masinelli - STLCC 101 | Blogz Project</h6>
+                <hr width="90%" />
+                <section id="menu">
+                    <a href="/"><i class="fa fa-home"></i>&nbsp;HOME</a>&nbsp;&nbsp;
+                    &nbsp;&#124;&nbsp;
+                    &nbsp;&nbsp;<a href="/blog"><i class="fa fa-list-alt"></i>&nbsp;ALL POSTS</a>&nbsp;&nbsp;
+                    &nbsp;&#124;&nbsp;
+                    &nbsp;&nbsp;<a href="/blog/newpost"><i class="fa fa-pencil-square-o"></i>&nbsp;CREATE A NEW POST</a>
+                </section>
+                <hr width="90%" />
+            </header>
+            <section id="heading">
+                {% block title %}
+                {% endblock %}
+            </section>
+            {% block content %}
+            {% endblock %}
+            <br />
+        </main>
     </body>
 </html>

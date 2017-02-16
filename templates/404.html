@@ -1,9 +1,15 @@
 {% extends 'base.html' %}
 
+{% block title %}
+<h3>404 Error Code</h3>
+{% endblock %}
+
 {% block content %}
-
-<h1>nothing here!</h1>
-
+<hr />
+<h4>Sorry, there is nothing here!</h4>
 <p>{{ error }}</p>
-
+<hr />
+<section id="return">
+    <a href="/blog"><i class="fa fa-arrow-circle-left"></i>&nbsp;Return to main Blog page</a>
+</section>
 {% endblock %}

@@ -6,36 +6,32 @@ import hashutils
 template_dir = os.path.join(os.path.dirname(__file__), 'templates')
 jinja_env = jinja2.Environment(loader = jinja2.FileSystemLoader(template_dir), autoescape = True)
 
+# class for gathering various methods used by request handlers
 class BlogHandler(webapp2.RequestHandler):
-    """ Utility class for gathering various useful methods that are used by most request handlers """
 
+    # Get all posts ordered by creation date (descending)
     def get_posts(self, limit, offset):
-        """ Get all posts ordered by creation date (descending) """
         query = Post.all().order('-created')
         return query.fetch(limit=limit, offset=offset)
 
+    # Get all posts by user, ordered by creation date (descending)
     def get_posts_by_user(self, user, limit, offset):
-        """
-            Get all posts by a specific user, ordered by creation date (descending).
-            The user parameter will be a User object.
-        """
-
         # TODO - filter the query so that only posts by the given user
         return None
 
+    # Get a user object from the db, based on their username
     def get_user_by_name(self, username):
-        """ Get a user object from the db, based on their username """
         user = db.GqlQuery("SELECT * FROM User WHERE username = '%s'" % username)
         if user:
             return user.get()
 
+    # Login a user specified by a User object user
     def login_user(self, user):
-        """ Login a user specified by a User object user """
         user_id = user.key().id()
         self.set_secure_cookie('user_id', str(user_id))
 
+    # Logout a user specified by a User object user
     def logout_user(self):
-        """ Logout a user specified by a User object user """
         self.set_secure_cookie('user_id', '')
 
     def read_secure_cookie(self, name):
@@ -47,12 +43,10 @@ class BlogHandler(webapp2.RequestHandler):
         cookie_val = hashutils.make_secure_val(val)
         self.response.headers.add_header('Set-Cookie', '%s=%s; Path=/' % (name, cookie_val))
 
+    # restrict access to certain pages when not logged in
+    # If the request path is in the global auth_paths list,
+    # user must be signed in to access the path/resource
     def initialize(self, *a, **kw):
-        """
-            A filter to restrict access to certain pages when not logged in.
-            If the request path is in the global auth_paths list, then the user
-            must be signed in to access the path/resource.
-        """
         webapp2.RequestHandler.initialize(self, *a, **kw)
         uid = self.read_secure_cookie('user_id')
         self.user = uid and User.get_by_id(int(uid))
@@ -60,14 +54,15 @@ class BlogHandler(webapp2.RequestHandler):
         if not self.user and self.request.path in auth_paths:
             self.redirect('/login')
 
-class IndexHandler(BlogHandler):
 
+# class to list all blog users
+class IndexHandler(BlogHandler):
     def get(self):
-        """ List all blog users """
         users = User.all()
         t = jinja_env.get_template("index.html")
         response = t.render(users = users)
         self.response.write(response)
+
 
 class BlogIndexHandler(BlogHandler):
 
@@ -75,7 +70,6 @@ class BlogIndexHandler(BlogHandler):
     page_size = 5
 
     def get(self, username=""):
-        """ """
 
         # If request is for a specific page, set page number and offset accordingly
         page = self.request.get("page")
@@ -117,8 +111,8 @@ class BlogIndexHandler(BlogHandler):
 
 class NewPostHandler(BlogHandler):
 
+    # Render the new post form with or without an error, based on parameters
     def render_form(self, title="", body="", error=""):
-        """ Render the new post form with or without an error, based on parameters """
         t = jinja_env.get_template("newpost.html")
         response = t.render(title=title, body=body, error=error)
         self.response.out.write(response)
@@ -126,8 +120,8 @@ class NewPostHandler(BlogHandler):
     def get(self):
         self.render_form()
 
+    # Create a new blog post if possible. Otherwise, return with an error message
     def post(self):
-        """ Create a new blog post if possible. Otherwise, return with an error message """
         title = self.request.get("title")
         body = self.request.get("body")
 
@@ -144,14 +138,12 @@ class NewPostHandler(BlogHandler):
             id = post.key().id()
             self.redirect("/blog/%s" % id)
         else:
-            error = "we need both a title and a body!"
+            error = "<strong>Error:</strong> We can't create a post without a post title <u>and</u> post content. Please try again."
             self.render_form(title, body, error)
 
+# Render a page with post determined by the id (via the URL/permalink)
 class ViewPostHandler(BlogHandler):
-
     def get(self, id):
-        """ Render a page with post determined by the id (via the URL/permalink) """
-
         post = Post.get_by_id(int(id))
         if post:
             t = jinja_env.get_template("post.html")
@@ -164,7 +156,6 @@ class ViewPostHandler(BlogHandler):
         self.response.out.write(response)
 
 class SignupHandler(BlogHandler):
-
     def validate_username(self, username):
         USER_RE = re.compile(r"^[a-zA-Z0-9_-]{3,20}$")
         if USER_RE.match(username):
@@ -198,16 +189,9 @@ class SignupHandler(BlogHandler):
         response = t.render(errors={})
         self.response.out.write(response)
 
+    # Validate submitted data, creating a new user if all fields are valid.
+    # If data doesn't validate, render the form again with an error
     def post(self):
-        """
-            Validate submitted data, creating a new user if all fields are valid.
-            If data doesn't validate, render the form again with an error.
-
-            This code is essentially identical to the solution to the Signup portion
-            of the Formation assignment. The main modification is that we are now
-            able to create a new user object and store it when we have valid data.
-        """
-
         submitted_username = self.request.get("username")
         submitted_password = self.request.get("password")
         submitted_verify = self.request.get("verify")
@@ -223,7 +207,7 @@ class SignupHandler(BlogHandler):
         has_error = False
 
         if existing_user:
-            errors['username_error'] = "A user with that username already exists"
+            errors['username_error'] = "Sorry, that username already exists."
             has_error = True
         elif (username and password and verify and (email is not None) ):
 
@@ -260,8 +244,8 @@ class LoginHandler(BlogHandler):
 
     # TODO - The login code here is mostly set up for you, but there isn't a template to log in
 
+    # Render the login form with or without an error, based on parameters
     def render_login_form(self, error=""):
-        """ Render the login form with or without an error, based on parameters """
         t = jinja_env.get_template("login.html")
         response = t.render(error=error)
         self.response.out.write(response)
@@ -285,7 +269,6 @@ class LoginHandler(BlogHandler):
             self.render_login_form(error="Invalid password")
 
 class LogoutHandler(BlogHandler):
-
     def get(self):
         self.logout_user()
         self.redirect('/blog')

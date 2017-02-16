@@ -1,40 +1,61 @@
 {% extends 'base.html' %}
-
+{% block title %}
+<h2>Welcome to Blogz!</h2>
+<h3>We look forward to reading your posts!</h3>
+{% endblock %}
 {% block content %}
-
-<h1>Signup</h1>
-<form method="post">
+<hr />
+<form id="newuser" method="post">
     <table>
         <tr>
-            <td><label for="username">Username</label></td>
+            <td class="caption">
+                <span class="caption">Username:</span>
+            </td>
             <td>
                 <input name="username" type="text" value="{{ username }}">
+            </td>
+            <td class="error">
                 <span class="error">{{ errors.username_error }}</span>
             </td>
         </tr>
         <tr>
-            <td><label for="password">Password</label></td>
+            <td class="caption">
+                <span class="caption">Password:</span>
+            </td>
             <td>
-                <input name="password" type="password">
+                <input name="password" type="password" />
+            </td>
+            <td class="error">
                 <span class="error">{{ errors.password_error }}</span>
             </td>
         </tr>
         <tr>
-            <td><label for="verify">Verify Password</label></td>
+            <td class="caption">
+                <span class="caption">Verify Password:</span>
+            </td>
             <td>
-                <input name="verify" type="password">
+                <input name="verify" type="password" />
+            </td>
+            <td class="error">
                 <span class="error">{{ errors.verify_error }}</span>
             </td>
         </tr>
         <tr>
-            <td><label for="email">Email (optional)</label></td>
+            <td class="caption">
+                <span class="caption">Email:</span>
+            </td>
             <td>
-                <input name="email" type="email" value="{{ email }}">
+                <input name="email" type="email" value="{{ email }}" />
+            </td>
+            <td class="error">
                 <span class="error">{{ errors.email_error }}</span>
             </td>
         </tr>
     </table>
-    <input type="submit">
+    <div class="buttonish"><input type="submit" value="Join Blogz!"></div>
 </form>
-
+<hr />
+<section id="return">
+    <a href="/blog"><i class="fa fa-arrow-circle-left"></i>&nbsp;Return to main Blog page</a>
+</section>
 {% endblock %}

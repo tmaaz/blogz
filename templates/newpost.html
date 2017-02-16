@@ -1,20 +1,25 @@
 {% extends 'base.html' %}
-
+{% block title %}
+<h2>Post to Blogz!</h2>
+<h3>We welcome your comments</h3>
+{% endblock %}
 {% block content %}
-
-<h1>new post</h1>
-
-<form method="post">
+<hr />
+<form id="newpost" method="post">
     <label>
-        <div>title</div>
+        <span class="caption">Title:</span><br />
         <input type="text" name="title" value="{{title}}">
     </label>
     <label>
-        <div>post</div>
+        <span class="caption">Post:</span><br />
         <textarea name="body">{{body}}</textarea>
     </label>
-    <div class="error">{{ error }}</div>
-    <input type="submit">
+    <span class="error">{{ error|safe }}</span><br />
+    <input type="submit" value="Submit Post"><br />&nbsp;
 </form>
-
+<br />
+<hr />
+<section id="return">
+    <a href="/blog"><i class="fa fa-arrow-circle-left"></i>&nbsp;Return to main Blog page</a>
+</section>
 {% endblock %}

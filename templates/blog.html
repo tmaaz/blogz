@@ -1,43 +1,68 @@
 {% extends 'base.html' %}
 
+{% block title %}
+<h2>All Posts</h2>
+<h3>({{ allSubs }} total posts)</h3>
+{% endblock %}
+
 {% block content %}
-
-<h1>blog posts!</h1>
-
+<hr />
 {% for post in posts %}
-
-<h2><a href="/blog/{{ post.key().id() }}">{{ post.title }}</a></h2>
-<p>{{ post.body }}</p>
-<!-- TODO add author w/ link to author's blog page -->
-
+<article id="content">
+    <section id="heading">
+        <a href="/blog/{{ post.key().id() }}"><h4>{{ post.title }}</h4></a>
+        <h5>Posted on: {{ post.created.strftime("%B %d, %Y, %I:%M %p") }}</h5><br />
+        <h5>Written by: <!-- <a href="/blog/{{ username }}">{{ username }}</a> --> </h5>
+    </section>
+    <section id="body">
+        <p>
+            {{ post.body|truncate(length=400, killwords=False, end='...') }}
+        </p>
+        {% if post.body|length > 400 %}
+        <span id="readme" style="display: block">
+            <a href="/blog/{{ post.key().id() }}">Read more...</a>
+        </span>
+        {% endif %}
+    </section>
+</article>
 {% endfor %}
-
+<hr />
+<section id="pagination">
 {% if username %}
     {% if prev_page %}
-    <a href="/blog/{{ username }}?page={{ prev_page }}">&lt; prev</a>
+    <a href="/blog/{{ username }}?page={{ prev_page }}"><i class="fa fa-arrow-circle-left"></i>&nbsp;Previous</a>
+    {% else %}
+    <span id="pageoff"><i class="fa fa-arrow-circle-left"></i>&nbsp;Previous</span>
     {% endif %}
 
-    {% if prev_page and next_page %}
-    &nbsp;&nbsp; | &nbsp;&nbsp;
-    {% endif %}
+    &nbsp;&#124;&nbsp;
+    Page {{ curPg }} of {{ allPg }}
+    &nbsp;&#124;&nbsp;
 
     {% if next_page %}
-    <a href="/blog/{{ username }}?page={{ next_page }}">next &gt;</a>
+    <a href="/blog/{{ username }}?page={{ next_page }}">Next&nbsp;<i class="fa fa-arrow-circle-right"></i></a>
+    {% else %}
+    <span id="pageoff">Next&nbsp;<i class="fa fa-arrow-circle-right"></i></span>
     {% endif %}
 {% endif %}
 
 {% if not username %}
     {% if prev_page %}
-    <a href="/blog?page={{ prev_page }}">&lt; prev</a>
+    <a href="/blog?page={{ prev_page }}"><i class="fa fa-arrow-circle-left"></i>&nbsp;Previous</a>
+    {% else %}
+    <span id="pageoff"><i class="fa fa-arrow-circle-left"></i>&nbsp;Previous</span>
     {% endif %}
 
-    {% if prev_page and next_page %}
-    &nbsp;&nbsp; | &nbsp;&nbsp;
-    {% endif %}
+    &nbsp;&#124;&nbsp;
+    Page {{ curPg }} of {{ allPg }}
+    &nbsp;&#124;&nbsp;
 
     {% if next_page %}
-    <a href="/blog?page={{ next_page }}">next &gt;</a>
+    <a href="/blog?page={{ next_page }}">Next&nbsp;<i class="fa fa-arrow-circle-right"></i></a>
+    {% else %}
+    <span id="pageoff">Next&nbsp;<i class="fa fa-arrow-circle-right"></i></span>
     {% endif %}
 {% endif %}
-
+</section>
+<br />
 {% endblock %}
