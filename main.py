@@ -18,8 +18,7 @@ class BlogHandler(webapp2.RequestHandler):
 
     # Get all posts by user, ordered by creation date (descending)
     def get_posts_by_user(self, user, limit, offset):
-        ## TODO: add query to only return specific user posts
-        query = Post.all().order('-created')
+        query = Post.all().filter('author', user.username).order('-created')
         return query.fetch(limit=limit, offset=offset)
 
     # Get a user object from the db, based on their username
