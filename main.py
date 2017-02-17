@@ -2,16 +2,11 @@ import webapp2, jinja2, os, re
 from google.appengine.ext import db
 from models import Post, User
 import hashutils
+import math
 
 template_dir = os.path.join(os.path.dirname(__file__), 'templates')
 jinja_env = jinja2.Environment(loader=jinja2.FileSystemLoader(template_dir), autoescape=True)
 
-def myBlogger():
-    try:
-        thisUser = str(self.user.username)
-    except:
-        thisUser = ""
-    return thisUser
 
 # class for gathering various methods used by request handlers
 class BlogHandler(webapp2.RequestHandler):
@@ -65,12 +60,13 @@ class BlogHandler(webapp2.RequestHandler):
 class IndexHandler(BlogHandler):
     def get(self):
         users = User.all()
+        allUsers = users.count()
         t = jinja_env.get_template("index.html")
         try:
             thisUser = str(self.user.username)
         except:
             thisUser = ""
-        response = t.render(users = users, thisUser = thisUser)
+        response = t.render(users = users, allUsers = allUsers, thisUser = thisUser)
         self.response.write(response)
 
 
@@ -101,11 +97,20 @@ class BlogIndexHandler(BlogHandler):
             next_page = page + 1
         else:
             next_page = None
-        thisUser = myBlogger()
+        try:
+            thisUser = str(self.user.username)
+        except:
+            thisUser = ""
+        allPosts = len(posts)
+        allPg = allPosts // self.page_size + (allPosts % self.page_size > 0)
+        if allPg < 1:
+            allPg = 1
         # render the page
         t = jinja_env.get_template("blog.html")
         response = t.render(
                     posts=posts,
+                    allPosts=allPosts,
+                    allPg = allPg,
                     page=page,
                     page_size=self.page_size,
                     prev_page=prev_page,
@@ -117,7 +122,10 @@ class NewPostHandler(BlogHandler):
 
     # Render the new post form with or without an error, based on parameters
     def render_form(self, title="", body="", error=""):
-        thisUser = myBlogger()
+        try:
+            thisUser = str(self.user.username)
+        except:
+            thisUser = ""
         t = jinja_env.get_template("newpost.html")
         response = t.render(title=title, body=body, error=error, thisUser=thisUser)
         self.response.out.write(response)
@@ -148,7 +156,10 @@ class NewPostHandler(BlogHandler):
 class ViewPostHandler(BlogHandler):
     def get(self, id):
         post = Post.get_by_id(int(id))
-        thisUser = myBlogger()
+        try:
+            thisUser = str(self.user.username)
+        except:
+            thisUser = ""
         if post:
             t = jinja_env.get_template("post.html")
             response = t.render(post=post, thisUser = thisUser)
@@ -188,7 +199,10 @@ class SignupHandler(BlogHandler):
             return email
 
     def get(self):
-        thisUser = myBlogger()
+        try:
+            thisUser = str(self.user.username)
+        except:
+            thisUser = ""
         t = jinja_env.get_template("signup.html")
         response = t.render(errors={}, thisUser = thisUser)
         self.response.out.write(response)
@@ -238,7 +252,10 @@ class SignupHandler(BlogHandler):
                 errors['email_error'] = "That's not a valid email"
 
         if has_error:
-            thisUser = myBlogger()
+            try:
+                thisUser = str(self.user.username)
+            except:
+                thisUser = ""
             t = jinja_env.get_template("signup.html")
             response = t.render(username=username, email=email, errors=errors, thisUser = thisUser)
             self.response.out.write(response)
@@ -249,7 +266,10 @@ class LoginHandler(BlogHandler):
 
     # Render the login form with or without an error, based on parameters
     def render_login_form(self, error=""):
-        thisUser = myBlogger()
+        try:
+            thisUser = str(self.user.username)
+        except:
+            thisUser = ""
         t = jinja_env.get_template("login.html")
         response = t.render(error=error, thisUser = thisUser)
         self.response.out.write(response)

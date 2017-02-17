@@ -2,7 +2,7 @@
 
 {% block title %}
 <h2>All Posts</h2>
-<h3>({{ allSubs }} total posts)</h3>
+<h3>({{ allPosts }} total posts)</h3>
 {% endblock %}
 
 {% block content %}
@@ -39,7 +39,7 @@
     {% endif %}
 
     &nbsp;&#124;&nbsp;
-    Page {{ curPg }} of {{ allPg }}
+    Page {{ page }} of {{ allPg }}
     &nbsp;&#124;&nbsp;
 
     {% if next_page %}
@@ -55,9 +55,8 @@
     {% else %}
     <span id="pageoff"><i class="fa fa-arrow-circle-left"></i>&nbsp;Previous</span>
     {% endif %}
-
     &nbsp;&#124;&nbsp;
-    Page {{ curPg }} of {{ allPg }}
+    Page {{ page }} of {{ allPg }}
     &nbsp;&#124;&nbsp;
 
     {% if next_page %}
