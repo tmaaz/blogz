@@ -2,8 +2,11 @@
 {% block title %}
 <section id="heading">
     <h4>{{ post.title }}</h4>
-    <h5>Posted on: {{ post.created.strftime("%B %d, %Y, %I:%M %p") }}</h5><br />
-    <h5> Written by: <!-- <a href="/blog/{{ username }}">{{ username }}</a> --></h5>
+    <h5>
+        Written by: <a href="/blog/{{ post.author }}">{{ post.author }}</a>
+        <br />
+        Posted on: {{ post.created.strftime("%B %d, %Y, %I:%M %p") }}
+    </h5>
 </section>
 {% endblock %}
 {% block content %}

@@ -11,8 +11,11 @@
 <article id="content">
     <section id="heading">
         <a href="/blog/{{ post.key().id() }}"><h4>{{ post.title }}</h4></a>
-        <h5>Posted on: {{ post.created.strftime("%B %d, %Y, %I:%M %p") }}</h5><br />
-        <h5>Written by: <!-- <a href="/blog/{{ username }}">{{ username }}</a> --> </h5>
+        <h5>
+            Written by: <a href="/blog/{{ post.author }}">{{ post.author }}</a>
+            <br />
+            Posted on: {{ post.created.strftime("%B %d, %Y, %I:%M %p") }}
+        </h5>
     </section>
     <section id="body">
         <p>

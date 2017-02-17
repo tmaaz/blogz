@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
     <head>
-        <title>STLCC 101 | Blogz</title>
+        <title>Blogz! | STLCC 101</title>
         <script src="https://use.fontawesome.com/f5407f7b61.js"></script>
         <link rel="stylesheet" href="/css/normalize.css">
         <link rel="stylesheet" href="/css/styles.css">
@@ -11,8 +11,8 @@
     <body>
         <main id="contentwrap">
             <header id="logging">
-                {% if username %}
-                Welcome, <a href="/blog/{{ username }}">{{user.username}}</a>!
+                {% if thisUser %}
+                Welcome, <a href="/blog/{{ thisUser }}">{{ thisUser }}</a>!
                 &nbsp;&#124;&nbsp;
                 <a href="/logout">logout</a>
                 {% else %}
