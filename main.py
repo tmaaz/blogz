@@ -85,8 +85,15 @@ class BlogIndexHandler(BlogHandler):
         if username:
             user = self.get_user_by_name(username)
             posts = self.get_posts_by_user(user, self.page_size, offset)
+            userTitle = "by " + username
+            allPosts = Post.all().filter('author', user.username).count()
         else:
             posts = self.get_posts(self.page_size, offset)
+            userTitle = ""
+            allPosts = Post.all().count()
+        allPg = allPosts // self.page_size + (allPosts % self.page_size > 0)
+        if allPg < 1:
+            allPg = 1
         # determine next/prev page numbers for navigation links
         if page > 1:
             prev_page = page - 1
@@ -100,21 +107,18 @@ class BlogIndexHandler(BlogHandler):
             thisUser = str(self.user.username)
         except:
             thisUser = ""
-        allPosts = len(posts)
-        allPg = allPosts // self.page_size + (allPosts % self.page_size > 0)
-        if allPg < 1:
-            allPg = 1
         # render the page
         t = jinja_env.get_template("blog.html")
         response = t.render(
                     posts=posts,
                     allPosts=allPosts,
-                    allPg = allPg,
+                    allPg=allPg,
                     page=page,
                     page_size=self.page_size,
                     prev_page=prev_page,
                     next_page=next_page,
-                    thisUser = thisUser)
+                    thisUser=thisUser,
+                    userTitle=userTitle)
         self.response.out.write(response)
 
 class NewPostHandler(BlogHandler):
