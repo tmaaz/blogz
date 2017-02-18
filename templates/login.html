@@ -1,7 +1,7 @@
 {% extends 'base.html' %}
 {% block title %}
 <h2>Please Enter Your Credentials</h2>
-<h3><em>Don't have an account? <a href="/signup">Get one!</a></em></h3>
+<h3><em>Don't have a Blogz account? <a href="/signup">Get one!</a></em></h3>
 {% endblock %}
 {% block content %}
 <hr />
@@ -23,15 +23,19 @@
                 <input name="password" type="password" />
             </td>
         </tr>
+        {% if error %}
         <tr>
             <td class="error" colspan="2">
                 &nbsp;<span class="error">{{ error }}</span>
             </td>
+        </tr>
+        {% endif %}
     </table>
     <div class="buttonish"><input type="submit" value="Enter Blogz!"></div>
 </form>
 <hr />
 <section id="return">
-    <a href="/blog"><i class="fa fa-arrow-circle-left"></i>&nbsp;Return to main Blog page</a>
+    Return to:<br />
+    <a href="/"><i class="fa fa-arrow-circle-up"></i>&nbsp;Home Page</a>&nbsp;&#124;&nbsp;<a href="/blog"></i>All Posts&nbsp;<i class="fa fa-arrow-circle-up"></i></a>
 </section>
 {% endblock %}

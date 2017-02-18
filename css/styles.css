@@ -22,7 +22,7 @@ h1, h2, h3, h4, h5, h6
 
 h1
     {
-        font-size: 34px;
+        font-size: 45px;
         margin: 20px 0 5px 0;
         font-style: italic;
     }
@@ -325,10 +325,23 @@ div#multiColumn {
 
 li
     {
-        padding: 4px 0 0 35px;
+        padding: 10px 0 0 35px;
     }
 
 nav #user-account
     {
         float: right;
+    }
+
+#logbox
+    {
+        float: right;
+        width: auto;
+        height: 15px;
+        background: #efefef;
+        padding: 10px;
+        margin: -19px 2px 2px 2px;
+        border: 1px solid #000;
+        border-radius: 5px;
+        box-shadow: 1px 1px 3px 1px rgba(0, 0, 0, 0.20);
     }

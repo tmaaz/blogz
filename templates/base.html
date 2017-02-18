@@ -11,18 +11,19 @@
     <body>
         <main id="contentwrap">
             <header id="logging">
-                {% if thisUser %}
-                Welcome, <a href="/blog/{{ thisUser }}">{{ thisUser }}</a>!
-                &nbsp;&#124;&nbsp;
-                <a href="/logout">logout</a>
-                {% else %}
-                Already a member?&nbsp;<i class="fa fa-arrow-circle-o-right"></i>&nbsp;&nbsp;
-                <a href="/login">login</a>
-                {% endif %}
+                <div id="logbox">
+                    {% if thisUser %}
+                    Welcome, <a href="/blog/{{ thisUser }}">{{ thisUser }}</a>!
+                    &nbsp;&#124;&nbsp;
+                    <a href="/logout">logout</a>
+                    {% else %}
+                    Already a member?&nbsp;&nbsp;<a href="/login"><i class="fa fa-sign-in"></i>&nbsp;login</a>
+                    {% endif %}
+                </div>
             </header>
             <header id="wrap">
-                <h1><i class="fa fa-paper-plane"></i>&nbsp;Blogz! (Build-a-Blog 2.0)</h1>
-                <h5>When you absolutely, positively need to blog something... right meow.</h5>
+                <h1><i class="fa fa-paper-plane"></i>&nbsp;Blogz!</h1>
+                <h5>When you need to blog something... right meow.</h5>
                 <h6>by Trevor Masinelli - STLCC 101 | Blogz Project</h6>
                 <hr width="90%" />
                 <section id="menu">

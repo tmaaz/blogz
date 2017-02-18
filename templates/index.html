@@ -1,27 +1,39 @@
 {% extends 'base.html' %}
 
 {% block title %}
-<h2>Welcome to Blogz!</h2>
-<h3>Meet Our Community</h3>
+<h2>Welcome to Our Community!</h2>
+<h3>Meet the Bloggers &amp; Writers</h3>
 {% endblock %}
 
 {% block content %}
 <hr />
 <article id="content">
     <section id="heading">
-        <h4>Blog Contributors</h4>
-        <h5>({{ allUsers }} total)</h5>
+        <h4><i class="fa fa-vcard-o"></i>&nbsp;Contributors</h4>
+        <h5>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;({{ allUsers }} total)</h5>
     </section>
     <section id="body">
         <div id="multiColumn">
             <ul>
                 {% for user in users %}
-                <li><a href="/blog/{{ user.username }}"><i class="fa fa-user-circle"></i>&nbsp;{{ user.username }}</a></li>
+                    {% if user.username == thisUser %}
+                    <li><a href="/blog/{{ user.username }}"><i class="fa fa-user-circle-o"></i>&nbsp;<u>{{ user.username }}</u></a></li>
+                    {% else %}
+                        <li><a href="/blog/{{ user.username }}"><i class="fa fa-user-circle"></i>&nbsp;{{ user.username }}</a></li>
+                    {% endif %}
                 {% endfor %}
             </ul>
         </div>
     </section>
 </article>
 <hr />
-<br />
+<section id="return">
+    {% if thisUser %}
+        You are currently logged in as:&nbsp;<a href="/blog/{{ thisUser }}">{{ thisUser }}</a>
+    {% else %}
+        You are not currently logged in.<br />
+        Already a member?&nbsp;&nbsp;<a href="/login"><i class="fa fa-sign-in"></i>&nbsp;login</a><br />
+        Not a member yet?&nbsp;&nbsp;<a href="/signup"><i class="fa fa-user-plus"></i>&nbsp;signup</a>
+    {% endif %}
+</section>
 {% endblock %}
