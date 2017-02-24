@@ -118,7 +118,8 @@ class BlogIndexHandler(BlogHandler):
                     prev_page=prev_page,
                     next_page=next_page,
                     thisUser=thisUser,
-                    userTitle=userTitle)
+                    userTitle=userTitle,
+                    username=username)
         self.response.out.write(response)
 
 class NewPostHandler(BlogHandler):
